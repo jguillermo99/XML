@@ -1,6 +1,7 @@
 package Logica;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,6 +23,7 @@ public class XMLClass {
 	private final Document doc;
 	private Producto prod;
 	private NodeList nodosRaiz;
+	private final ArrayList<Producto> productos = new ArrayList<Producto>();
 
 	public XMLClass() {
 		// TODO Auto-generated constructor stub
@@ -63,7 +65,24 @@ public class XMLClass {
 		String url = nodo.getTextContent();
 
 		prod = new Producto(nombre, precio, url);
+
+		if (validateProduct(prod))
+			prod.setCantidad(1);
+		else
+			productos.add(prod);
+
 		prod.printAtributes();
 
 	}
+
+	public boolean validateProduct(Producto producto) {
+		// Si el producto ya existe retorna verdadero
+		for (int i = 0; i < productos.size(); i++) {
+			if (producto.getNombre() == productos.get(i).getNombre())
+				return true;
+		}
+
+		return false;
+	}
+
 }
